@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FileForge — создание файлов</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        FileForge
+      </div>
+      <span class="header-sub">Создавай файлы любого формата</span>
+    </header>
+
+    <main class="main">
+      <div class="controls">
+        <div class="control-group">
+          <label for="filename">Имя файла</label>
+          <input type="text" id="filename" placeholder="мой_файл" value="мой_файл" />
+        </div>
+
+        <div class="control-group">
+          <label for="format">Формат</label>
+          <div class="format-row">
+            <select id="format">
+              <optgroup label="Текст">
+                <option value="txt">txt — Plain text</option>
+                <option value="md">md — Markdown</option>
+                <option value="csv">csv — CSV таблица</option>
+                <option value="log">log — Лог файл</option>
+              </optgroup>
+              <optgroup label="Код">
+                <option value="html">html — HTML</option>
+                <option value="css">css — CSS</option>
+                <option value="js">js — JavaScript</option>
+                <option value="ts">ts — TypeScript</option>
+                <option value="py">py — Python</option>
+                <option value="java">java — Java</option>
+                <option value="cpp">cpp — C++</option>
+                <option value="c">c — C</option>
+                <option value="cs">cs — C#</option>
+                <option value="go">go — Go</option>
+                <option value="rs">rs — Rust</option>
+                <option value="php">php — PHP</option>
+                <option value="rb">rb — Ruby</option>
+                <option value="swift">swift — Swift</option>
+                <option value="kt">kt — Kotlin</option>
+                <option value="sh">sh — Shell Script</option>
+                <option value="bat">bat — Batch (Windows)</option>
+                <option value="sql">sql — SQL</option>
+              </optgroup>
+              <optgroup label="Данные">
+                <option value="json">json — JSON</option>
+                <option value="xml">xml — XML</option>
+                <option value="yaml">yaml — YAML</option>
+                <option value="toml">toml — TOML</option>
+                <option value="ini">ini — INI Config</option>
+                <option value="env">.env — Environment</option>
+              </optgroup>
+              <optgroup label="Разметка / Документы">
+                <option value="tex">tex — LaTeX</option>
+                <option value="rst">rst — reStructuredText</option>
+                <option value="adoc">adoc — AsciiDoc</option>
+                <option value="svg">svg — SVG</option>
+              </optgroup>
+              <optgroup label="Свой формат">
+                <option value="custom">✏️  Свой формат...</option>
+              </optgroup>
+            </select>
+            <input
+              type="text"
+              id="custom-ext"
+              placeholder="расширение"
+              class="custom-ext hidden"
+              maxlength="20"
+            />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="encoding">Кодировка</label>
+          <select id="encoding">
+            <option value="utf-8">UTF-8</option>
+            <option value="utf-16">UTF-16</option>
+            <option value="windows-1251">Windows-1251</option>
+            <option value="ascii">ASCII</option>
+          </select>
+        </div>
+
+        <button class="btn-template" id="btn-template" title="Вставить шаблон">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9h18M9 21V9"/>
+          </svg>
+          Шаблон
+        </button>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-toolbar">
+          <span class="file-preview" id="file-preview">мой_файл.txt</span>
+          <div class="toolbar-actions">
+            <button class="toolbar-btn" id="btn-clear" title="Очистить">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" id="btn-copy" title="Копировать">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+            <span class="char-count" id="char-count">0 символов</span>
+          </div>
+        </div>
+        <textarea
+          id="editor"
+          class="editor"
+          placeholder="Начните вводить содержимое файла..."
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn-download" id="btn-download">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Скачать файл
+        </button>
+      </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
