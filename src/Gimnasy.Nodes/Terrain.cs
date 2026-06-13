@@ -33,10 +33,10 @@ public sealed class Terrain3D : Node3D
     /// <summary>Apply a brush at a world position. This is what an editor's
     /// click-drag or an in-game terrain-deform ability calls.</summary>
     public int SculptWorld(TerrainBrush brush, Vector3 worldPos, float radius, float strength,
-        float targetHeight = 0f, byte material = 0)
+        float targetHeight = 0f, int paintLayer = 0)
     {
         return Data.Sculpt(brush, WorldToLocalXZ(worldPos), radius, strength,
-            targetHeight, material, DefaultBrushFalloff);
+            targetHeight, paintLayer, DefaultBrushFalloff);
     }
 
     /// <summary>Sample terrain height (world Y) under a world position — handy
@@ -61,6 +61,6 @@ public sealed class TerrainBrushSettings : Gimnasy.Core.Scene.Node
     [Export("range:0,50")] public float Strength { get; set; } = 2f;
     [Export("range:0,1")] public float Falloff { get; set; } = 0.5f;
     [Export] public float TargetHeight { get; set; }
-    [Export("range:0,7")] public int PaintMaterial { get; set; }
+    [Export("range:0,15")] public int PaintLayer { get; set; }
     [Export] public bool SnapToGrid { get; set; }
 }

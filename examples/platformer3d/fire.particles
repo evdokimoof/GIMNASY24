@@ -1,0 +1,281 @@
+// Gimnasy Particle System — full module document
+{
+  "format": 2,
+  "type": "ParticleSystem",
+  "name": "Fire",
+  "main": {
+    "duration": 5.0,
+    "looping": true,
+    "prewarm": false,
+    "start_delay": 0.0,
+    "start_lifetime": {
+      "mode": "RandomBetweenConstants",
+      "constant_min": 0.8,
+      "constant_max": 1.4,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "start_speed": {
+      "mode": "RandomBetweenConstants",
+      "constant_min": 1.5,
+      "constant_max": 3.0,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "start_size": {
+      "mode": "RandomBetweenConstants",
+      "constant_min": 0.4,
+      "constant_max": 0.9,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "start_rotation": {
+      "mode": "Constant",
+      "constant_min": 0.0,
+      "constant_max": 0.0,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "start_color": {
+      "colors": [
+        {
+          "t": 0,
+          "color": [
+            1.0,
+            0.85,
+            0.3,
+            1.0
+          ]
+        },
+        {
+          "t": 1,
+          "color": [
+            1.0,
+            0.35,
+            0.05,
+            1.0
+          ]
+        }
+      ],
+      "alphas": [
+        {
+          "t": 0,
+          "a": 1.0
+        },
+        {
+          "t": 1,
+          "a": 1.0
+        }
+      ]
+    },
+    "gravity_modifier": {
+      "mode": "Constant",
+      "constant_min": 0.0,
+      "constant_max": 0.0,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "simulation_space": "Local",
+    "simulation_speed": 1.0,
+    "max_particles": 600
+  },
+  "emission": {
+    "enabled": true,
+    "rate_over_time": {
+      "mode": "Constant",
+      "constant_min": 0.0,
+      "constant_max": 120.0,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "rate_over_distance": {
+      "mode": "Constant",
+      "constant_min": 0.0,
+      "constant_max": 0.0,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "bursts": [
+      {
+        "time": 0.0,
+        "count": {
+          "mode": "Constant",
+          "constant_min": 0.0,
+          "constant_max": 40,
+          "multiplier": 1.0,
+          "curve_min": [],
+          "curve_max": []
+        },
+        "cycles": 1,
+        "interval": 0.01,
+        "probability": 1.0
+      }
+    ]
+  },
+  "shape": {
+    "enabled": true,
+    "shape": "Cone",
+    "radius": 0.4,
+    "radius_thickness": 1.0,
+    "angle_degrees": 12.0,
+    "arc_degrees": 360.0,
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "randomize_direction": 0.1,
+    "align_to_direction": false
+  },
+  "velocity_over_lifetime": {
+    "enabled": false
+  },
+  "limit_velocity": {
+    "enabled": false
+  },
+  "force_over_lifetime": {
+    "enabled": false
+  },
+  "color_over_lifetime": {
+    "enabled": true,
+    "gradient": {
+      "colors": [
+        {
+          "t": 0,
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "t": 1,
+          "color": [
+            1,
+            0.2,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "alphas": [
+        {
+          "t": 0,
+          "a": 1
+        },
+        {
+          "t": 1,
+          "a": 0.0
+        }
+      ]
+    }
+  },
+  "size_over_lifetime": {
+    "enabled": true,
+    "size": {
+      "mode": "Curve",
+      "constant_min": 0,
+      "constant_max": 1,
+      "multiplier": 1,
+      "curve_min": [],
+      "curve_max": [
+        {
+          "t": 0,
+          "v": 1,
+          "in": 0,
+          "out": -1
+        },
+        {
+          "t": 1,
+          "v": 0,
+          "in": -1,
+          "out": 0
+        }
+      ]
+    }
+  },
+  "rotation_over_lifetime": {
+    "enabled": false
+  },
+  "noise": {
+    "enabled": true,
+    "strength": {
+      "mode": "Constant",
+      "constant_min": 0.0,
+      "constant_max": 1.5,
+      "multiplier": 1.0,
+      "curve_min": [],
+      "curve_max": []
+    },
+    "frequency": 0.5,
+    "scroll_speed": [
+      0,
+      0.5,
+      0
+    ],
+    "octaves": 2,
+    "octave_multiplier": 0.5,
+    "octave_scale": 2.0,
+    "damping": 1.0
+  },
+  "collision": {
+    "enabled": false
+  },
+  "sub_emitters": {
+    "enabled": true,
+    "emitters": [
+      {
+        "trigger": "Death",
+        "system": "res://smoke.particles",
+        "probability": 0.5
+      }
+    ]
+  },
+  "texture_sheet": {
+    "enabled": false
+  },
+  "trails": {
+    "enabled": false
+  },
+  "lights": {
+    "enabled": true,
+    "ratio": 0.1,
+    "color": [
+      1,
+      0.6,
+      0.2,
+      1
+    ],
+    "range": 5.0,
+    "intensity": 1.5
+  },
+  "renderer": {
+    "mode": "Billboard",
+    "material": null,
+    "mesh": null,
+    "sort_mode": "ByDistance",
+    "length_scale": 2.0,
+    "velocity_scale": 0.0,
+    "min_particle_size": 0.0,
+    "max_particle_size": 0.5
+  },
+  "active_module_count": 5
+}

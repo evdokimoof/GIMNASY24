@@ -95,6 +95,43 @@
 `TextureSample`. Порты `Output`: `albedo`, `metallic`, `roughness`,
 `emission`, `alpha`.
 
+## `.terrain` — полный документ ландшафта
+
+Большой JSON, как экспорт 3D-модели: размеры, дескриптор генерации, вода,
+текстурные слои с правилами авто-размещения (по высоте и уклону), **полная
+карта высот**, **сплатмапы** (веса смешивания текстур по слоям), маска дыр,
+запечённые нормали, манифест LOD-чанков и статистика. Пишется/читается
+`TerrainIO` (C#) и `gimnasy.cli` (Python).
+
+```jsonc
+{
+  "format": 2, "type": "Terrain", "name": "Island",
+  "dimensions": { "resolution": 65, "cell_size": 2.0, "max_height": 80.0, "world_size": 128.0 },
+  "water": { "enabled": true, "level": 14.4, "color": [0.1,0.35,0.5,0.85] },
+  "generation": { "seed": 1337, "octaves": 6, "lacunarity": 2.0, "gain": 0.5, "base_frequency": 0.015, "ridged": 0.0, "domain_warp": 0.0 },
+  "layers": [ { "type": "TerrainLayer", "properties": { "LayerName": "grass", "HeightMax": 44, "SlopeMaxDegrees": 35 } } ],
+  "heightmap": { "encoding": "f32-array", "width": 65, "height": 65, "data": [ /* 4225 высот */ ] },
+  "splatmaps": [ { "layer": 0, "data": [ /* 4225 весов */ ] } ],
+  "holes": { "encoding": "indices", "data": [] },
+  "normals": { "encoding": "vec3-array", "data": [ /* 3×4225 */ ] },
+  "stats": { "vertex_count": 4225, "triangle_count": 8192, "max_slope_degrees": 71.2 }
+}
+```
+
+Сгенерировать пример: `python3 -m gimnasy.cli gen-terrain out.terrain --res 65`.
+
+## `.particles` — система частиц
+
+Полный JSON со всеми модулями (как Unity Shuriken / Godot process material):
+`main`, `emission` (+bursts), `shape`, `velocity_over_lifetime`,
+`limit_velocity`, `force_over_lifetime`, `color_over_lifetime`,
+`size_over_lifetime`, `rotation_over_lifetime`, `noise`, `collision`,
+`sub_emitters`, `texture_sheet`, `trails`, `lights`, `renderer`. Значения —
+кривые `MinMaxCurve` (Constant / Curve / RandomBetween…) и градиенты.
+Пишется/читается `ParticleIO` (C#); симулируется `ParticleSimulator`.
+
+Сгенерировать пример: `python3 -m gimnasy.cli gen-particles out.particles`.
+
 ## Ресурсы `.tres` и `.import`
 
 Импортёр (`gimnasy.cli import`) копирует ассет в `assets/` и пишет рядом

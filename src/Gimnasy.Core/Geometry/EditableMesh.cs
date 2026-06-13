@@ -18,7 +18,9 @@ public sealed class EditableMesh : Resource
 
     public List<Vector3> Vertices { get; } = new();
     public List<Vector3> Normals { get; } = new();
+    public List<Vector4> Tangents { get; } = new();  // xyz + handedness sign in w
     public List<Vector2> Uvs { get; } = new();
+    public List<Color> Colors { get; } = new();      // per-vertex colour
     public List<int> Indices { get; } = new();
 
     [Export] public bool Smooth { get; set; } = true;
@@ -30,7 +32,9 @@ public sealed class EditableMesh : Resource
     {
         Vertices.Add(position);
         Normals.Add(Vector3.Up);
+        Tangents.Add(new Vector4(1, 0, 0, 1));
         Uvs.Add(uv);
+        Colors.Add(Color.White);
         return Vertices.Count - 1;
     }
 
@@ -41,7 +45,36 @@ public sealed class EditableMesh : Resource
 
     public void Clear()
     {
-        Vertices.Clear(); Normals.Clear(); Uvs.Clear(); Indices.Clear();
+        Vertices.Clear(); Normals.Clear(); Tangents.Clear();
+        Uvs.Clear(); Colors.Clear(); Indices.Clear();
+    }
+
+    /// <summary>Compute per-vertex tangents from UVs (Lengyel's method) for
+    /// correct normal-mapping. Requires UVs and up-to-date normals.</summary>
+    public void RecalculateTangents()
+    {
+        int n = Vertices.Count;
+        var tan = new Vector3[n];
+        var bitan = new Vector3[n];
+        for (int t = 0; t < Indices.Count; t += 3)
+        {
+            int i0 = Indices[t], i1 = Indices[t + 1], i2 = Indices[t + 2];
+            Vector3 e1 = Vertices[i1] - Vertices[i0], e2 = Vertices[i2] - Vertices[i0];
+            Vector2 d1 = Uvs[i1] - Uvs[i0], d2 = Uvs[i2] - Uvs[i0];
+            float denom = d1.X * d2.Y - d2.X * d1.Y;
+            float r = Mathf.Abs(denom) < Mathf.Epsilon ? 0f : 1f / denom;
+            Vector3 sdir = (e1 * d2.Y - e2 * d1.Y) * r;
+            Vector3 tdir = (e2 * d1.X - e1 * d2.X) * r;
+            tan[i0] += sdir; tan[i1] += sdir; tan[i2] += sdir;
+            bitan[i0] += tdir; bitan[i1] += tdir; bitan[i2] += tdir;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            Vector3 nrm = Normals[i];
+            Vector3 t3 = (tan[i] - nrm * nrm.Dot(tan[i])).Normalized;     // Gram-Schmidt
+            float w = nrm.Cross(tan[i]).Dot(bitan[i]) < 0f ? -1f : 1f;
+            Tangents[i] = new Vector4(t3.X, t3.Y, t3.Z, w);
+        }
     }
 
     /// <summary>Recompute smooth per-vertex normals from face geometry.</summary>

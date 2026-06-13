@@ -29,13 +29,23 @@
 - ⌨️ **C#-скриптинг** — скрипты это подклассы узлов с `[Export]`-свойствами;
   компилируются в сборку игры и регистрируются движком.
 - 🎛️ **Нодовый редактор шейдеров** — граф узлов компилируется в GLSL.
-- ⛰️ **Террейн как в Roblox Studio** — height-field с кистями Add / Subtract /
-  Grow / Erode / Smooth / Flatten / Paint / SeaLevel.
+- ⛰️ **Профессиональный террейн** (в духе Roblox Studio + World Machine) —
+  height-field с 11 кистями (Add/Subtract/Grow/Erode/Smooth/Flatten/Paint/
+  SeaLevel/Noise/Hole/Fill), мульти-слойные **сплатмапы** с авто-текстурированием
+  по высоте и уклону, **гидравлическая и термальная эрозия**, фрактальный шум с
+  domain warp, генерация **полного 3D-меша** (вершины, нормали, тангенты, UV,
+  цвета вершин, дыры, **LOD-чанки**) и сериализация всего ландшафта в большой
+  JSON `.terrain` (как экспорт 3D-модели).
 - ✏️ **Grease Pencil** — рисование штрихами в 2D/3D, слои, упрощение кривых (RDP).
 - 🗿 **Скульптинг и редактирование мешей** — кисти Draw / Inflate / Grab /
   Smooth / Flatten / Pinch / Crease, операции Subdivide / Extrude / Smooth.
 - 🌫️ **VFX** — дым, огонь, вода, облака, объёмный туман, взрывы, трейлы,
   молнии, брызги, погода и пост-эффекты экрана.
+- ✨ **Сложная система частиц** (как Unity Shuriken / Godot) — 16 модулей
+  (emission+bursts, shape, velocity/force/limit over lifetime, color/size/
+  rotation over lifetime, noise/turbulence, collision, sub-emitters, texture
+  sheet, trails, lights, renderer), кривые `MinMaxCurve` и градиенты, CPU-
+  симулятор и полная сериализация в JSON `.particles`.
 - 🛠️ **Инструментарий на Python** — импорт медиа/3D, валидация форматов,
   генерация манифеста иконок, упаковка под Windows/Linux/macOS.
 - 🖼️ **Иконки редактора** — набор из 54 иконок с автогенерируемым манифестом.
@@ -90,6 +100,10 @@ python3 -m gimnasy.cli validate ../examples/platformer3d
 
 # Компиляция нодового шейдера в GLSL:
 python3 -m gimnasy.cli shader ../examples/platformer3d/water.shadergraph
+
+# Генерация полного ландшафта (большой JSON) и системы частиц:
+python3 -m gimnasy.cli gen-terrain ../examples/platformer3d/island.terrain --res 65
+python3 -m gimnasy.cli gen-particles ../examples/platformer3d/fire.particles
 
 # Импорт медиа/3D ассета в проект (png/jpg/ogg/mp3/fbx/glb/ttf…):
 python3 -m gimnasy.cli import path/to/hero.png ../examples/platformer3d

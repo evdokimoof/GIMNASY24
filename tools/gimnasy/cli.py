@@ -18,13 +18,16 @@ from . import (
     importer,
     material_format,
     packaging,
+    particles_format,
     scene_format,
     shadergraph_format,
+    terrain_format,
 )
+from . import jsonlike
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
-    exts = (".scen", ".material", ".shadergraph")
+    exts = (".scen", ".material", ".shadergraph", ".terrain", ".particles")
     targets: list[str] = []
     if os.path.isdir(args.path):
         for root, _dirs, files in os.walk(args.path):
@@ -51,6 +54,23 @@ def cmd_validate(args: argparse.Namespace) -> int:
                 errors = shadergraph_format.validate(graph)
                 if not errors:
                     label = f"{len(graph.get('nodes', []))} nodes"
+            except Exception as exc:  # noqa: BLE001
+                errors = [f"parse error: {exc}"]
+        elif path.endswith(".terrain"):
+            try:
+                doc = terrain_format.load(path)
+                errors = terrain_format.validate(doc)
+                if not errors:
+                    res = doc["dimensions"]["resolution"]
+                    label = f"{res}x{res}, {doc.get('stats', {}).get('triangle_count', '?')} tris"
+            except Exception as exc:  # noqa: BLE001
+                errors = [f"parse error: {exc}"]
+        elif path.endswith(".particles"):
+            try:
+                doc = particles_format.load(path)
+                errors = particles_format.validate(doc)
+                if not errors:
+                    label = f"{particles_format.module_summary(doc)['active_count']} active modules"
             except Exception as exc:  # noqa: BLE001
                 errors = [f"parse error: {exc}"]
         else:
@@ -148,6 +168,22 @@ def cmd_shader(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_gen_terrain(args: argparse.Namespace) -> int:
+    doc = terrain_format.generate(args.name, resolution=args.res)
+    jsonlike.dump(doc, args.out, header="Gimnasy Terrain — full landscape document")
+    size_kb = os.path.getsize(args.out) // 1024
+    print(f"wrote {args.out} ({size_kb} KB, {args.res}x{args.res}, "
+          f"{doc['stats']['triangle_count']} triangles)")
+    return 0
+
+
+def cmd_gen_particles(args: argparse.Namespace) -> int:
+    doc = particles_format.fire_preset(args.name)
+    jsonlike.dump(doc, args.out, header="Gimnasy Particle System — full module document")
+    print(f"wrote {args.out} ({particles_format.module_summary(doc)['active_count']} active modules)")
+    return 0
+
+
 def cmd_info(_args: argparse.Namespace) -> int:
     print(f"Gimnasy toolchain {__version__} (python {sys.version.split()[0]})")
     print("Supported import formats:")
@@ -190,6 +226,17 @@ def build_parser() -> argparse.ArgumentParser:
     sh.add_argument("graph")
     sh.add_argument("--out", default=None)
     sh.set_defaults(func=cmd_shader)
+
+    gt = sub.add_parser("gen-terrain", help="generate a full .terrain document")
+    gt.add_argument("out")
+    gt.add_argument("--res", type=int, default=65)
+    gt.add_argument("--name", default="Island")
+    gt.set_defaults(func=cmd_gen_terrain)
+
+    gp = sub.add_parser("gen-particles", help="generate a .particles fire preset")
+    gp.add_argument("out")
+    gp.add_argument("--name", default="Fire")
+    gp.set_defaults(func=cmd_gen_particles)
 
     inf = sub.add_parser("info", help="show toolchain info")
     inf.set_defaults(func=cmd_info)
