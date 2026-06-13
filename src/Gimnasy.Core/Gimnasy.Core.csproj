@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Gimnasy.Core has ZERO external dependencies (BCL only) so it always
+    restores and builds with just the .NET 8 SDK installed.
+  -->
+  <PropertyGroup>
+    <AssemblyName>Gimnasy.Core</AssemblyName>
+  </PropertyGroup>
+</Project>
