@@ -133,7 +133,10 @@ class PackagingTests(unittest.TestCase):
             packaging.generate_macos_bundle("Demo", d, rid="osx-x64")
             pbx = open(os.path.join(d, "Demo.xcodeproj", "project.pbxproj"), encoding="utf-8").read()
             self.assertEqual(pbx.count("{"), pbx.count("}"))
-            self.assertIn("PBXLegacyTarget", pbx)
+            self.assertIn("PBXAggregateTarget", pbx)        # reliable modern target
+            self.assertIn("PBXShellScriptBuildPhase", pbx)
+            self.assertNotIn("PBXLegacyTarget", pbx)         # avoid the Xcode inconsistency bug
+            self.assertIn("command -v dotnet", pbx)          # auto-detect the SDK
             self.assertIn("osx-x64", pbx)
 
 

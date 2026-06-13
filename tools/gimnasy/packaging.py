@@ -83,22 +83,19 @@ PBXPROJ = """// !$*UTF8*$!
 \tobjectVersion = 56;
 \tobjects = {{
 
-/* Begin PBXLegacyTarget section */
+/* Begin PBXAggregateTarget section */
 \t\t1A00000000000000000001 /* {name} */ = {{
-\t\t\tisa = PBXLegacyTarget;
-\t\t\tbuildArgumentsString = "publish \\"$(GIMNASY_PROJECT)\\" -c $(CONFIGURATION) -r $(GIMNASY_RID) --self-contained true -p:PublishSingleFile=false -o \\"$(SRCROOT)/{name}.app/Contents/MacOS\\"";
-\t\t\tbuildConfigurationList = 1A00000000000000000010 /* Build configuration list for PBXLegacyTarget "{name}" */;
+\t\t\tisa = PBXAggregateTarget;
+\t\t\tbuildConfigurationList = 1A00000000000000000010 /* Build configuration list for {name} */;
 \t\t\tbuildPhases = (
+\t\t\t\t1A00000000000000000040 /* Build with dotnet */,
 \t\t\t);
-\t\t\tbuildToolPath = "$(GIMNASY_DOTNET)";
-\t\t\tbuildWorkingDirectory = "$(SRCROOT)";
 \t\t\tdependencies = (
 \t\t\t);
 \t\t\tname = "{name}";
-\t\t\tpassBuildSettingsInEnvironment = 1;
 \t\t\tproductName = "{name}";
 \t\t}};
-/* End PBXLegacyTarget section */
+/* End PBXAggregateTarget section */
 
 /* Begin PBXProject section */
 \t\t1A00000000000000000002 /* Project object */ = {{
@@ -106,6 +103,9 @@ PBXPROJ = """// !$*UTF8*$!
 \t\t\tattributes = {{
 \t\t\t\tLastUpgradeCheck = 1500;
 \t\t\t\tORGANIZATIONNAME = "Gimnasy";
+\t\t\t\tTargetAttributes = {{
+\t\t\t\t\t1A00000000000000000001 = {{ CreatedOnToolsVersion = "15.0"; }};
+\t\t\t\t}};
 \t\t\t}};
 \t\t\tbuildConfigurationList = 1A00000000000000000011 /* Build configuration list for PBXProject */;
 \t\t\tcompatibilityVersion = "Xcode 14.0";
@@ -130,6 +130,28 @@ PBXPROJ = """// !$*UTF8*$!
 \t\t}};
 /* End PBXGroup section */
 
+/* Begin PBXShellScriptBuildPhase section */
+\t\t1A00000000000000000040 /* Build with dotnet */ = {{
+\t\t\tisa = PBXShellScriptBuildPhase;
+\t\t\talwaysOutOfDate = 1;
+\t\t\tbuildActionMask = 2147483647;
+\t\t\tfiles = (
+\t\t\t);
+\t\t\tinputFileListPaths = (
+\t\t\t);
+\t\t\tinputPaths = (
+\t\t\t);
+\t\t\tname = "Build with dotnet";
+\t\t\toutputFileListPaths = (
+\t\t\t);
+\t\t\toutputPaths = (
+\t\t\t);
+\t\t\trunOnlyForDeploymentPostprocessing = 0;
+\t\t\tshellPath = /bin/sh;
+\t\t\tshellScript = "{shell}";
+\t\t}};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin XCBuildConfiguration section */
 \t\t1A00000000000000000020 /* Debug */ = {{
 \t\t\tisa = XCBuildConfiguration;
@@ -137,7 +159,6 @@ PBXPROJ = """// !$*UTF8*$!
 \t\t\t\tCODE_SIGNING_ALLOWED = NO;
 \t\t\t\tGIMNASY_PROJECT = "{project}";
 \t\t\t\tGIMNASY_RID = "{rid}";
-\t\t\t\tGIMNASY_DOTNET = "/usr/local/share/dotnet/dotnet";
 \t\t\t\tPRODUCT_NAME = "{name}";
 \t\t\t}};
 \t\t\tname = Debug;
@@ -148,25 +169,30 @@ PBXPROJ = """// !$*UTF8*$!
 \t\t\t\tCODE_SIGNING_ALLOWED = NO;
 \t\t\t\tGIMNASY_PROJECT = "{project}";
 \t\t\t\tGIMNASY_RID = "{rid}";
-\t\t\t\tGIMNASY_DOTNET = "/usr/local/share/dotnet/dotnet";
 \t\t\t\tPRODUCT_NAME = "{name}";
 \t\t\t}};
 \t\t\tname = Release;
 \t\t}};
 \t\t1A00000000000000000030 /* Debug */ = {{
 \t\t\tisa = XCBuildConfiguration;
-\t\t\tbuildSettings = {{ PRODUCT_NAME = "{name}"; }};
+\t\t\tbuildSettings = {{
+\t\t\t\tPRODUCT_NAME = "{name}";
+\t\t\t\tSDKROOT = macosx;
+\t\t\t}};
 \t\t\tname = Debug;
 \t\t}};
 \t\t1A00000000000000000031 /* Release */ = {{
 \t\t\tisa = XCBuildConfiguration;
-\t\t\tbuildSettings = {{ PRODUCT_NAME = "{name}"; }};
+\t\t\tbuildSettings = {{
+\t\t\t\tPRODUCT_NAME = "{name}";
+\t\t\t\tSDKROOT = macosx;
+\t\t\t}};
 \t\t\tname = Release;
 \t\t}};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-\t\t1A00000000000000000010 /* Build configuration list for PBXLegacyTarget */ = {{
+\t\t1A00000000000000000010 /* Build configuration list for {name} */ = {{
 \t\t\tisa = XCConfigurationList;
 \t\t\tbuildConfigurations = (
 \t\t\t\t1A00000000000000000020 /* Debug */,
@@ -188,6 +214,25 @@ PBXPROJ = """// !$*UTF8*$!
 \t}};
 \trootObject = 1A00000000000000000002 /* Project object */;
 }}
+"""
+
+# Shell run by the Aggregate target. Locates the .NET SDK across the usual macOS
+# install locations, then publishes the runtime straight into the .app bundle.
+BUILD_SHELL = r"""set -e
+echo "Gimnasy: building $PRODUCT_NAME ($GIMNASY_RID / $CONFIGURATION)"
+DOTNET="$(command -v dotnet || true)"
+if [ -z "$DOTNET" ]; then
+  for p in "$HOME/.dotnet/dotnet" /opt/homebrew/bin/dotnet /usr/local/bin/dotnet /usr/local/share/dotnet/dotnet; do
+    if [ -x "$p" ]; then DOTNET="$p"; break; fi
+  done
+fi
+if [ -z "$DOTNET" ]; then
+  echo "error: .NET 8 SDK not found. Install it from https://dotnet.microsoft.com/download"
+  exit 1
+fi
+echo "Gimnasy: using $DOTNET"
+"$DOTNET" publish "$GIMNASY_PROJECT" -c "$CONFIGURATION" -r "$GIMNASY_RID" --self-contained true -p:PublishSingleFile=false -o "$SRCROOT/$PRODUCT_NAME.app/Contents/MacOS"
+echo "Gimnasy: published into $SRCROOT/$PRODUCT_NAME.app/Contents/MacOS"
 """
 
 WORKSPACE_DATA = """<?xml version="1.0" encoding="UTF-8"?>
@@ -224,6 +269,11 @@ SCHEME = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
+def _escape_pbx_string(s: str) -> str:
+    """Escape a shell script for embedding in a quoted pbxproj string value."""
+    return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\t", "\\t")
+
+
 def generate_macos_bundle(name: str, out_dir: str, project: str = RUNTIME_PROJECT,
                           rid: str = "osx-arm64") -> dict:
     ident = "".join(c for c in name.lower() if c.isalnum()) or "game"
@@ -238,8 +288,9 @@ def generate_macos_bundle(name: str, out_dir: str, project: str = RUNTIME_PROJEC
     # .xcodeproj with project file, workspace and a shared scheme.
     xcodeproj = os.path.join(out_dir, f"{name}.xcodeproj")
     os.makedirs(xcodeproj, exist_ok=True)
+    shell = _escape_pbx_string(BUILD_SHELL)
     with open(os.path.join(xcodeproj, "project.pbxproj"), "w", encoding="utf-8") as fh:
-        fh.write(PBXPROJ.format(name=name, project=project, rid=rid))
+        fh.write(PBXPROJ.format(name=name, project=project, rid=rid, shell=shell))
 
     workspace = os.path.join(xcodeproj, "project.xcworkspace")
     os.makedirs(workspace, exist_ok=True)
