@@ -133,6 +133,10 @@ python3 -m unittest discover -s tests
 
 Сами команды `dotnet publish` нужно запускать там, где установлен .NET 8 SDK.
 
+Готовый Xcode-проект для примера лежит в
+[`examples/platformer3d/macos/`](examples/platformer3d/macos/) — открой
+`Platformer3D.xcodeproj`, выбери схему **Platformer3D** и нажми **Run (⌘R)**.
+
 ## Рендеринг
 
 Движок построен вокруг интерфейса `IRenderingServer`. Сейчас в комплекте —

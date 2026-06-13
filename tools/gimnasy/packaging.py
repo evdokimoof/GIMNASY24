@@ -77,54 +77,185 @@ INFO_PLIST = """<?xml version="1.0" encoding="UTF-8"?>
 
 PBXPROJ = """// !$*UTF8*$!
 {{
-  archiveVersion = 1;
-  objectVersion = 56;
-  objects = {{
-    /* External build target that delegates to dotnet publish */
-    1A0000000000000000000001 /* {name} */ = {{
-      isa = PBXLegacyTarget;
-      buildArgumentsString = "publish ../../{project} -c Release -r osx-arm64 --self-contained true -o ./build/macos";
-      buildConfigurationList = 1A0000000000000000000010;
-      buildToolPath = "/usr/local/share/dotnet/dotnet";
-      buildWorkingDirectory = "$(SRCROOT)";
-      name = "{name}";
-      passBuildSettingsInEnvironment = 1;
-      productName = "{name}";
-    }};
-    1A0000000000000000000002 /* Project */ = {{
-      isa = PBXProject;
-      attributes = {{ LastUpgradeCheck = 1500; }};
-      buildConfigurationList = 1A0000000000000000000011;
-      compatibilityVersion = "Xcode 14.0";
-      mainGroup = 1A0000000000000000000003;
-      targets = ( 1A0000000000000000000001 );
-    }};
-    1A0000000000000000000003 = {{ isa = PBXGroup; children = (); sourceTree = "<group>"; }};
-    1A0000000000000000000010 = {{ isa = XCConfigurationList; buildConfigurations = ( 1A0000000000000000000020 ); }};
-    1A0000000000000000000011 = {{ isa = XCConfigurationList; buildConfigurations = ( 1A0000000000000000000021 ); }};
-    1A0000000000000000000020 = {{ isa = XCBuildConfiguration; name = Release; buildSettings = {{ PRODUCT_NAME = "{name}"; }}; }};
-    1A0000000000000000000021 = {{ isa = XCBuildConfiguration; name = Release; buildSettings = {{}}; }};
-  }};
-  rootObject = 1A0000000000000000000002;
+\tarchiveVersion = 1;
+\tclasses = {{
+\t}};
+\tobjectVersion = 56;
+\tobjects = {{
+
+/* Begin PBXLegacyTarget section */
+\t\t1A00000000000000000001 /* {name} */ = {{
+\t\t\tisa = PBXLegacyTarget;
+\t\t\tbuildArgumentsString = "publish \\"$(GIMNASY_PROJECT)\\" -c $(CONFIGURATION) -r $(GIMNASY_RID) --self-contained true -p:PublishSingleFile=false -o \\"$(SRCROOT)/{name}.app/Contents/MacOS\\"";
+\t\t\tbuildConfigurationList = 1A00000000000000000010 /* Build configuration list for PBXLegacyTarget "{name}" */;
+\t\t\tbuildPhases = (
+\t\t\t);
+\t\t\tbuildToolPath = "$(GIMNASY_DOTNET)";
+\t\t\tbuildWorkingDirectory = "$(SRCROOT)";
+\t\t\tdependencies = (
+\t\t\t);
+\t\t\tname = "{name}";
+\t\t\tpassBuildSettingsInEnvironment = 1;
+\t\t\tproductName = "{name}";
+\t\t}};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+\t\t1A00000000000000000002 /* Project object */ = {{
+\t\t\tisa = PBXProject;
+\t\t\tattributes = {{
+\t\t\t\tLastUpgradeCheck = 1500;
+\t\t\t\tORGANIZATIONNAME = "Gimnasy";
+\t\t\t}};
+\t\t\tbuildConfigurationList = 1A00000000000000000011 /* Build configuration list for PBXProject */;
+\t\t\tcompatibilityVersion = "Xcode 14.0";
+\t\t\tdevelopmentRegion = en;
+\t\t\thasScannedForEncodings = 0;
+\t\t\tknownRegions = ( en, Base );
+\t\t\tmainGroup = 1A00000000000000000003;
+\t\t\tprojectDirPath = "";
+\t\t\tprojectRoot = "";
+\t\t\ttargets = (
+\t\t\t\t1A00000000000000000001 /* {name} */,
+\t\t\t);
+\t\t}};
+/* End PBXProject section */
+
+/* Begin PBXGroup section */
+\t\t1A00000000000000000003 = {{
+\t\t\tisa = PBXGroup;
+\t\t\tchildren = (
+\t\t\t);
+\t\t\tsourceTree = "<group>";
+\t\t}};
+/* End PBXGroup section */
+
+/* Begin XCBuildConfiguration section */
+\t\t1A00000000000000000020 /* Debug */ = {{
+\t\t\tisa = XCBuildConfiguration;
+\t\t\tbuildSettings = {{
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+\t\t\t\tGIMNASY_PROJECT = "{project}";
+\t\t\t\tGIMNASY_RID = "{rid}";
+\t\t\t\tGIMNASY_DOTNET = "/usr/local/share/dotnet/dotnet";
+\t\t\t\tPRODUCT_NAME = "{name}";
+\t\t\t}};
+\t\t\tname = Debug;
+\t\t}};
+\t\t1A00000000000000000021 /* Release */ = {{
+\t\t\tisa = XCBuildConfiguration;
+\t\t\tbuildSettings = {{
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+\t\t\t\tGIMNASY_PROJECT = "{project}";
+\t\t\t\tGIMNASY_RID = "{rid}";
+\t\t\t\tGIMNASY_DOTNET = "/usr/local/share/dotnet/dotnet";
+\t\t\t\tPRODUCT_NAME = "{name}";
+\t\t\t}};
+\t\t\tname = Release;
+\t\t}};
+\t\t1A00000000000000000030 /* Debug */ = {{
+\t\t\tisa = XCBuildConfiguration;
+\t\t\tbuildSettings = {{ PRODUCT_NAME = "{name}"; }};
+\t\t\tname = Debug;
+\t\t}};
+\t\t1A00000000000000000031 /* Release */ = {{
+\t\t\tisa = XCBuildConfiguration;
+\t\t\tbuildSettings = {{ PRODUCT_NAME = "{name}"; }};
+\t\t\tname = Release;
+\t\t}};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+\t\t1A00000000000000000010 /* Build configuration list for PBXLegacyTarget */ = {{
+\t\t\tisa = XCConfigurationList;
+\t\t\tbuildConfigurations = (
+\t\t\t\t1A00000000000000000020 /* Debug */,
+\t\t\t\t1A00000000000000000021 /* Release */,
+\t\t\t);
+\t\t\tdefaultConfigurationIsVisible = 0;
+\t\t\tdefaultConfigurationName = Release;
+\t\t}};
+\t\t1A00000000000000000011 /* Build configuration list for PBXProject */ = {{
+\t\t\tisa = XCConfigurationList;
+\t\t\tbuildConfigurations = (
+\t\t\t\t1A00000000000000000030 /* Debug */,
+\t\t\t\t1A00000000000000000031 /* Release */,
+\t\t\t);
+\t\t\tdefaultConfigurationIsVisible = 0;
+\t\t\tdefaultConfigurationName = Release;
+\t\t}};
+/* End XCConfigurationList section */
+\t}};
+\trootObject = 1A00000000000000000002 /* Project object */;
 }}
 """
 
+WORKSPACE_DATA = """<?xml version="1.0" encoding="UTF-8"?>
+<Workspace version="1.0">
+   <FileRef location="self:">
+   </FileRef>
+</Workspace>
+"""
 
-def generate_macos_bundle(name: str, out_dir: str, project: str = RUNTIME_PROJECT) -> dict:
+SCHEME = """<?xml version="1.0" encoding="UTF-8"?>
+<Scheme LastUpgradeVersion="1500" version="1.7">
+   <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
+      <BuildActionEntries>
+         <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
+            <BuildableReference
+               BuildableIdentifier="primary"
+               BlueprintIdentifier="1A00000000000000000001"
+               BuildableName="{name}"
+               BlueprintName="{name}"
+               ReferencedContainer="container:{name}.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <LaunchAction buildConfiguration="Release" selectedDebuggerIdentifier="" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.PosixSpawn" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" allowLocationSimulation="YES">
+      <PathRunnable runnableDebuggingMode="0" FilePath="$(SRCROOT)/{name}.app">
+      </PathRunnable>
+   </LaunchAction>
+   <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" savedToolIdentifier="" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES">
+   </ProfileAction>
+   <AnalyzeAction buildConfiguration="Debug"></AnalyzeAction>
+   <ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"></ArchiveAction>
+</Scheme>
+"""
+
+
+def generate_macos_bundle(name: str, out_dir: str, project: str = RUNTIME_PROJECT,
+                          rid: str = "osx-arm64") -> dict:
     ident = "".join(c for c in name.lower() if c.isalnum()) or "game"
 
+    # .app bundle skeleton (Xcode publishes the binary into Contents/MacOS).
     app = os.path.join(out_dir, f"{name}.app", "Contents")
     os.makedirs(os.path.join(app, "MacOS"), exist_ok=True)
     os.makedirs(os.path.join(app, "Resources"), exist_ok=True)
     with open(os.path.join(app, "Info.plist"), "w", encoding="utf-8") as fh:
         fh.write(INFO_PLIST.format(name=name, ident=ident))
 
+    # .xcodeproj with project file, workspace and a shared scheme.
     xcodeproj = os.path.join(out_dir, f"{name}.xcodeproj")
     os.makedirs(xcodeproj, exist_ok=True)
     with open(os.path.join(xcodeproj, "project.pbxproj"), "w", encoding="utf-8") as fh:
-        fh.write(PBXPROJ.format(name=name, project=project))
+        fh.write(PBXPROJ.format(name=name, project=project, rid=rid))
 
-    return {"app_bundle": f"{out_dir}/{name}.app", "xcodeproj": xcodeproj}
+    workspace = os.path.join(xcodeproj, "project.xcworkspace")
+    os.makedirs(workspace, exist_ok=True)
+    with open(os.path.join(workspace, "contents.xcworkspacedata"), "w", encoding="utf-8") as fh:
+        fh.write(WORKSPACE_DATA)
+
+    schemes = os.path.join(xcodeproj, "xcshareddata", "xcschemes")
+    os.makedirs(schemes, exist_ok=True)
+    with open(os.path.join(schemes, f"{name}.xcscheme"), "w", encoding="utf-8") as fh:
+        fh.write(SCHEME.format(name=name))
+
+    return {
+        "app_bundle": f"{out_dir}/{name}.app",
+        "xcodeproj": xcodeproj,
+        "scheme": os.path.join(schemes, f"{name}.xcscheme"),
+    }
 
 
 def package_all(name: str, out_dir: str = "build") -> dict:
@@ -135,3 +266,4 @@ def package_all(name: str, out_dir: str = "build") -> dict:
         "macos": mac,
         "commands": {key: publish_command(rid) for key, rid in TARGETS.items()},
     }
+

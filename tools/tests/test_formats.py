@@ -120,9 +120,21 @@ class PackagingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             result = packaging.package_all("MyGame", d)
             self.assertEqual(len(result["scripts"]), 3)
-            self.assertTrue(os.path.isdir(result["macos"]["xcodeproj"]))
-            self.assertTrue(os.path.exists(os.path.join(result["macos"]["xcodeproj"], "project.pbxproj")))
+            xcodeproj = result["macos"]["xcodeproj"]
+            self.assertTrue(os.path.exists(os.path.join(xcodeproj, "project.pbxproj")))
+            self.assertTrue(os.path.exists(os.path.join(
+                xcodeproj, "project.xcworkspace", "contents.xcworkspacedata")))
+            self.assertTrue(os.path.exists(os.path.join(
+                xcodeproj, "xcshareddata", "xcschemes", "MyGame.xcscheme")))
             self.assertTrue(os.path.exists(os.path.join(d, "MyGame.app", "Contents", "Info.plist")))
+
+    def test_pbxproj_is_balanced(self):
+        with tempfile.TemporaryDirectory() as d:
+            packaging.generate_macos_bundle("Demo", d, rid="osx-x64")
+            pbx = open(os.path.join(d, "Demo.xcodeproj", "project.pbxproj"), encoding="utf-8").read()
+            self.assertEqual(pbx.count("{"), pbx.count("}"))
+            self.assertIn("PBXLegacyTarget", pbx)
+            self.assertIn("osx-x64", pbx)
 
 
 class IconManifestTests(unittest.TestCase):

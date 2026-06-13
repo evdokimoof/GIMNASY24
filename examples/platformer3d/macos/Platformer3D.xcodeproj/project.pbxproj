@@ -1,0 +1,113 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXLegacyTarget section */
+		1A00000000000000000001 /* Platformer3D */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "publish \"$(GIMNASY_PROJECT)\" -c $(CONFIGURATION) -r $(GIMNASY_RID) --self-contained true -p:PublishSingleFile=false -o \"$(SRCROOT)/Platformer3D.app/Contents/MacOS\"";
+			buildConfigurationList = 1A00000000000000000010 /* Build configuration list for PBXLegacyTarget "Platformer3D" */;
+			buildPhases = (
+			);
+			buildToolPath = "$(GIMNASY_DOTNET)";
+			buildWorkingDirectory = "$(SRCROOT)";
+			dependencies = (
+			);
+			name = "Platformer3D";
+			passBuildSettingsInEnvironment = 1;
+			productName = "Platformer3D";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		1A00000000000000000002 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1500;
+				ORGANIZATIONNAME = "Gimnasy";
+			};
+			buildConfigurationList = 1A00000000000000000011 /* Build configuration list for PBXProject */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = ( en, Base );
+			mainGroup = 1A00000000000000000003;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A00000000000000000001 /* Platformer3D */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXGroup section */
+		1A00000000000000000003 = {
+			isa = PBXGroup;
+			children = (
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1A00000000000000000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				GIMNASY_PROJECT = "../../../src/Gimnasy.Runtime/Gimnasy.Runtime.csproj";
+				GIMNASY_RID = "osx-arm64";
+				GIMNASY_DOTNET = "/usr/local/share/dotnet/dotnet";
+				PRODUCT_NAME = "Platformer3D";
+			};
+			name = Debug;
+		};
+		1A00000000000000000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				GIMNASY_PROJECT = "../../../src/Gimnasy.Runtime/Gimnasy.Runtime.csproj";
+				GIMNASY_RID = "osx-arm64";
+				GIMNASY_DOTNET = "/usr/local/share/dotnet/dotnet";
+				PRODUCT_NAME = "Platformer3D";
+			};
+			name = Release;
+		};
+		1A00000000000000000030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = { PRODUCT_NAME = "Platformer3D"; };
+			name = Debug;
+		};
+		1A00000000000000000031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = { PRODUCT_NAME = "Platformer3D"; };
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A00000000000000000010 /* Build configuration list for PBXLegacyTarget */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A00000000000000000020 /* Debug */,
+				1A00000000000000000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A00000000000000000011 /* Build configuration list for PBXProject */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A00000000000000000030 /* Debug */,
+				1A00000000000000000031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1A00000000000000000002 /* Project object */;
+}
