@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>gimnasy-editor</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gimnasy.Core\Gimnasy.Core.csproj" />
+    <ProjectReference Include="..\Gimnasy.Nodes\Gimnasy.Nodes.csproj" />
+    <ProjectReference Include="..\Gimnasy.Scripting\Gimnasy.Scripting.csproj" />
+  </ItemGroup>
+</Project>

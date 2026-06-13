@@ -1,0 +1,22 @@
+# .NET build output
+bin/
+obj/
+build/
+*.user
+*.suo
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Editor / OS
+.vs/
+.idea/
+.DS_Store
+__MACOSX/
+*.swp
+
+# Engine artifacts
+*.import.log

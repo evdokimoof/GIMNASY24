@@ -1,0 +1,13 @@
+// Gimnasy Resource — StandardMaterial3D
+{
+  "format": 1,
+  "type": "StandardMaterial3D",
+  "properties": {
+    "AlbedoColor": [0.2, 0.6, 1.0, 1.0],
+    "Metallic": 0.1,
+    "Roughness": 0.4,
+    "EmissionEnabled": true,
+    "Emission": [0.0, 0.1, 0.3, 1.0],
+    "EmissionEnergy": 0.5
+  }
+}

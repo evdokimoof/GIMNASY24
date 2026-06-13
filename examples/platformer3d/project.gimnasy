@@ -1,0 +1,10 @@
+// Gimnasy project manifest
+{
+  "format": 1,
+  "name": "Platformer3D",
+  "main_scene": "res://main.scen",
+  "script_assembly": "res://build/Game.dll",
+  "window_width": 1280,
+  "window_height": 720,
+  "physics_tick_rate": 60
+}

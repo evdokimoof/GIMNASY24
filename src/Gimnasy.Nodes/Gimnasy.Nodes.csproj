@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Gimnasy.Core\Gimnasy.Core.csproj" />
+  </ItemGroup>
+</Project>
