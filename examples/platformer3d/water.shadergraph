@@ -1,0 +1,26 @@
+// Gimnasy Shader Graph — animated water blend (compile with: gimnasy-editor shader water.shadergraph)
+{
+  "format": 1,
+  "type": "ShaderGraph",
+  "name": "Water",
+  "unshaded": false,
+  "nodes": [
+    { "id": "output", "type": "Output", "pos": [600, 0] },
+    { "id": "shallow", "type": "Color", "pos": [0, -120], "params": { "value": [0.2, 0.6, 0.7, 1.0] } },
+    { "id": "deep", "type": "Color", "pos": [0, 120], "params": { "value": [0.05, 0.2, 0.35, 1.0] } },
+    { "id": "uv", "type": "UV", "pos": [-200, 240] },
+    { "id": "time", "type": "Time", "pos": [-200, 360] },
+    { "id": "wave", "type": "Sin", "pos": [-20, 300] },
+    { "id": "noise", "type": "Noise", "pos": [200, 240] },
+    { "id": "blend", "type": "Mix", "pos": [400, 0] },
+    { "id": "glow", "type": "Color", "pos": [200, -200], "params": { "value": [0.0, 0.1, 0.2, 1.0] } }
+  ],
+  "connections": [
+    { "from": "uv", "to": "noise", "to_port": "uv" },
+    { "from": "shallow", "to": "blend", "to_port": "a" },
+    { "from": "deep", "to": "blend", "to_port": "b" },
+    { "from": "noise", "to": "blend", "to_port": "t" },
+    { "from": "blend", "to": "output", "to_port": "albedo" },
+    { "from": "glow", "to": "output", "to_port": "emission" }
+  ]
+}

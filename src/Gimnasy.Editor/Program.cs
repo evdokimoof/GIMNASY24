@@ -27,6 +27,7 @@ switch (args[0])
     case "new": return NewScene(args);
     case "add": return AddNode(args);
     case "icons": return Icons(args);
+    case "shader": return CompileShader(args);
     default: Usage(); return 1;
 }
 
@@ -89,6 +90,22 @@ static int Icons(string[] a)
     return 0;
 }
 
+static int CompileShader(string[] a)
+{
+    if (a.Length < 2) { Console.Error.WriteLine("error: usage: shader <graph.shadergraph> [out.glsl]"); return 1; }
+    var graph = Gimnasy.Core.Shading.ShaderGraphIO.Load(a[1]);
+    var result = Gimnasy.Core.Shading.ShaderGraphCompiler.Compile(graph);
+    if (!result.Ok)
+    {
+        Console.Error.WriteLine("shader compile errors:");
+        foreach (var e in result.Errors) Console.Error.WriteLine($"  - {e}");
+        return 1;
+    }
+    if (a.Length > 2) { File.WriteAllText(a[2], result.FragmentSource); Console.WriteLine($"wrote {a[2]}"); }
+    else Console.WriteLine(result.FragmentSource);
+    return 0;
+}
+
 static void Usage() => Console.WriteLine("""
     Gimnasy Editor (headless backend)
       gimnasy-editor tree   <scene.scen>
@@ -96,4 +113,5 @@ static void Usage() => Console.WriteLine("""
       gimnasy-editor new    <scene.scen> <RootType>
       gimnasy-editor add    <scene.scen> <Type> <Name> [parentPath]
       gimnasy-editor icons  [iconsDir]
+      gimnasy-editor shader <graph.shadergraph> [out.glsl]
     """);

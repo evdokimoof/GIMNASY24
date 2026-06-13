@@ -27,6 +27,8 @@ public static class VariantConverter
         Vector4 v => new List<object> { v.X, v.Y, v.Z, v.W },
         Quaternion q => new List<object> { q.X, q.Y, q.Z, q.W },
         Color c => new List<object> { c.R, c.G, c.B, c.A },
+        Rect2 r => new List<object> { r.Position.X, r.Position.Y, r.Size.X, r.Size.Y },
+        Aabb a => new List<object> { a.Position.X, a.Position.Y, a.Position.Z, a.Size.X, a.Size.Y, a.Size.Z },
         Resource r => ResourceRefToVariant(r),
         _ => value.ToString()
     };
@@ -59,6 +61,8 @@ public static class VariantConverter
         if (t == typeof(Vector4)) { var a = Arr(el); return new Vector4(a[0], a[1], a[2], a[3]); }
         if (t == typeof(Quaternion)) { var a = Arr(el); return new Quaternion(a[0], a[1], a[2], a[3]); }
         if (t == typeof(Color)) { var a = Arr(el); return new Color(a[0], a[1], a[2], a.Length > 3 ? a[3] : 1f); }
+        if (t == typeof(Rect2)) { var a = Arr(el); return new Rect2(a[0], a[1], a[2], a[3]); }
+        if (t == typeof(Aabb)) { var a = Arr(el); return new Aabb(new Vector3(a[0], a[1], a[2]), new Vector3(a[3], a[4], a[5])); }
 
         if (typeof(Resource).IsAssignableFrom(t))
             return ResourceRefFromVariant(el, t);

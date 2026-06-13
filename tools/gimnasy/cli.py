@@ -12,15 +12,24 @@ import argparse
 import os
 import sys
 
-from . import __version__, icon_manifest, importer, material_format, packaging, scene_format
+from . import (
+    __version__,
+    icon_manifest,
+    importer,
+    material_format,
+    packaging,
+    scene_format,
+    shadergraph_format,
+)
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
+    exts = (".scen", ".material", ".shadergraph")
     targets: list[str] = []
     if os.path.isdir(args.path):
         for root, _dirs, files in os.walk(args.path):
             for f in files:
-                if f.endswith((".scen", ".material")):
+                if f.endswith(exts):
                     targets.append(os.path.join(root, f))
     else:
         targets.append(args.path)
@@ -34,6 +43,14 @@ def cmd_validate(args: argparse.Namespace) -> int:
                 errors = scene_format.validate(scene)
                 if not errors:
                     label = f"{scene.node_count} nodes"
+            except Exception as exc:  # noqa: BLE001
+                errors = [f"parse error: {exc}"]
+        elif path.endswith(".shadergraph"):
+            try:
+                graph = shadergraph_format.load(path)
+                errors = shadergraph_format.validate(graph)
+                if not errors:
+                    label = f"{len(graph.get('nodes', []))} nodes"
             except Exception as exc:  # noqa: BLE001
                 errors = [f"parse error: {exc}"]
         else:
@@ -114,6 +131,23 @@ def cmd_new_project(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_shader(args: argparse.Namespace) -> int:
+    graph = shadergraph_format.load(args.graph)
+    glsl, errors = shadergraph_format.compile_glsl(graph)
+    if errors:
+        print("shader compile errors:")
+        for e in errors:
+            print(f"  - {e}")
+        return 1
+    if args.out:
+        with open(args.out, "w", encoding="utf-8") as fh:
+            fh.write(glsl)
+        print(f"wrote {args.out}")
+    else:
+        print(glsl)
+    return 0
+
+
 def cmd_info(_args: argparse.Namespace) -> int:
     print(f"Gimnasy toolchain {__version__} (python {sys.version.split()[0]})")
     print("Supported import formats:")
@@ -151,6 +185,11 @@ def build_parser() -> argparse.ArgumentParser:
     n.add_argument("dir")
     n.add_argument("--name", default="MyGame")
     n.set_defaults(func=cmd_new_project)
+
+    sh = sub.add_parser("shader", help="compile a .shadergraph to GLSL")
+    sh.add_argument("graph")
+    sh.add_argument("--out", default=None)
+    sh.set_defaults(func=cmd_shader)
 
     inf = sub.add_parser("info", help="show toolchain info")
     inf.set_defaults(func=cmd_info)
